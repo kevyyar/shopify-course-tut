@@ -1,0 +1,207 @@
+<!-- START BOOTSTRAP -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check" viewBox="0 0 16 16">
+        <title>Check</title>
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+    </symbol>
+</svg>
+
+<div class="container py-3">
+    <header>
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <h1 class="display-4 fw-normal">{{ section.settings.title }}</h1>
+            <p class="fs-5 text-muted">{{ section.settings.description }}</p>
+        </div>
+    </header>
+
+    <div class="row card-deck mb-3 text-center">
+        {% for block in section.blocks %}
+            {% assign description_list = block.settings.tier_description | split: ', ' %}
+            <div class="col card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">{{ block.settings.tier_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">${{ block.settings.tier_price }}<small
+                                class="text-muted fw-light">/{{ block.settings.tier_date }}</small>
+                    </h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        {% for item in description_list %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    <a
+                            href="{{ block.settings.tier_button_link }}"
+                            type="button"
+                            class="w-100 btn btn-lg
+                        {% if block.settings.tier_button_style == 'outline' %}
+                            btn-outline-primary
+                        {% else %}
+                            btn-primary
+                        {% endif %}">
+                        {{ block.settings.tier_button_text }}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% schema %}
+{
+	"name": "Pricing",
+	"tag": "section",
+	"class": "section-pricing",
+	"settings": [{
+			"type": "text",
+			"id": "title",
+			"label": "Title",
+			"default": "Pricing"
+		},
+		{
+			"type": "textarea",
+			"id": "description",
+			"label": "Description",
+			"default": "Quickly build an effective pricing table for your potential customers with this Bootstrap example.It’ s built with default Bootstrap components and utilities with little customization."
+		}
+	],
+	"blocks": [{
+		"type": "tier",
+		"name": "Tier",
+		"limit": 4,
+		"settings": [{
+				"type": "text",
+				"id": "tier_name",
+				"label": "Tier",
+				"default": "Free"
+			},
+			{
+				"type": "color",
+				"id": "tier_background",
+				"label": "Tier Background",
+				"default": "#ffffff"
+			},
+			{
+				"type": "text",
+				"id": "tier_price",
+				"label": "Tier Price",
+				"default": "0"
+			},
+			{
+				"type": "select",
+				"id": "tier_date",
+				"label": "Tier Date",
+				"default": "mo",
+				"options": [{
+						"value": "dy",
+						"label": "Daily"
+					},
+					{
+						"value": "mo",
+						"label": "Monthly"
+					},
+					{
+						"value": "yr",
+						"label": "Yearly"
+					}
+				]
+			},
+			{
+				"type": "textarea",
+				"id": "tier_description",
+				"label": "Tier Description",
+				"info": "Separate by a comma",
+				"default": "10 users included, 2 GB of storage, Email support, Help center access",
+				"placeholder": "example A, example B, example C"
+			},
+			{
+				"type": "select",
+				"id": "tier_button_style",
+				"label": "Tier Button Style",
+				"options": [{
+						"value": "outline",
+						"label": "Outline"
+					},
+					{
+						"value": "filled",
+						"label": "Filled"
+					}
+				],
+				"default": "outline"
+			},
+			{
+				"type": "text",
+				"id": "tier_button_text",
+				"label": "Button Text",
+				"default": "Sign Up"
+			},
+			{
+				"type": "text",
+				"id": "tier_button_link",
+				"label": "Tier Button Link URL",
+				"default": "#"
+			}
+		]
+	}],
+    "presets": [{
+    	"category": "Custom Pricing",
+    	"name": "Pricing",
+    	"settings": {
+    		"title": "Pricing",
+            "description": "Quickly build an effective pricing table for your potential customers with this Bootstrap example.It’ s built with default Bootstrap components and utilities with little customization."
+    	},
+        "blocks": [
+            {
+                "type": "tier",
+                "settings": {
+                    "tier_name": "Free",
+					"tier_price": "0",
+					"tier_date": "mo",
+					"tier_button_style": "outline"
+                }
+            },
+            {
+                "type": "tier",
+                "settings": {
+                    "tier_name": "Monthly",
+					"tier_price": "25",
+					"tier_date": "mo",
+					"tier_button_style": "filled"
+                }
+            },
+            {
+                "type": "tier",
+                "settings": {
+                    "tier_name": "Yearly",
+					"tier_price": "60",
+					"tier_date": "yr",
+					"tier_button_style": "filled"
+                }
+            }
+        ]
+    }]
+}
+{% endschema %}
+
+{% comment %}
+"blocks": [
+{
+"type": "tier",
+"settings": {
+"tier_name": "Free"
+}
+},
+{
+"type": "tier",
+"settings": {
+"tier_name": "Monthly"
+}
+},
+{
+"type": "tier",
+"settings": {
+"tier_name": "Yearly"
+}
+}
+{% endcomment %}
